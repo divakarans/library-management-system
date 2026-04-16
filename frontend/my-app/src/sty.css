@@ -1,0 +1,230 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Inter:wght@300;400;500&display=swap');
+
+body {
+  margin: 0;
+  background: #f1f5f9;
+  font-family: 'Inter', sans-serif;
+  color: #0f172a;
+}
+
+/* Layout */
+.app {
+  max-width: 1200px;
+  margin: auto;
+  padding: 50px 20px;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 40px;
+}
+
+.header h1 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 38px;
+  color: #1e3a8a;
+}
+
+.header p {
+  font-size: 12px;
+  color: #64748b;
+  letter-spacing: 2px;
+}
+
+/* Count */
+.count-box {
+  background: white;
+  border: 1px solid #e2e8f0;
+  padding: 14px 20px;
+  border-radius: 14px;
+  text-align: center;
+  box-shadow: 0 5px 20px rgba(37, 99, 235, 0.08);
+}
+
+.count-box h2 {
+  color: #2563eb;
+}
+
+/* Modes */
+.modes {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.mode {
+  padding: 8px 18px;
+  border-radius: 25px;
+  border: 1px solid #cbd5f5;
+  background: white;
+  color: #334155;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.mode:hover {
+  background: #2563eb;
+  color: white;
+}
+
+.mode.active {
+  background: #2563eb;
+  color: white;
+  border: none;
+}
+
+/* Search */
+.search-box input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #cbd5f5;
+  margin-bottom: 30px;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.search-box input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* Books */
+.books {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+/* Card */
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  transition: 0.3s;
+  position: relative;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.15);
+}
+
+/* Card top */
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-top h3 {
+  font-size: 18px;
+  margin: 0;
+  color: #1e3a8a;
+}
+
+.card-top span {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+/* Tags */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.tags span {
+  background: #eff6ff;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  color: #1d4ed8;
+}
+
+/* Remove button */
+.remove-btn {
+  border: none;
+  background: #2563eb;
+  color: white;
+  padding: 6px 14px;
+  border-radius: 10px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.remove-btn:hover {
+  background: #1e40af;
+}
+
+/* Floating button */
+.fab {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: #2563eb;
+  color: white;
+  font-size: 28px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+  transition: 0.3s;
+}
+
+.fab:hover {
+  transform: scale(1.1);
+  background: #1e40af;
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-content input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #cbd5f5;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.modal-actions button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
