@@ -31,6 +31,7 @@ def add_book():
     data = request.json
 
     sf.Book__c.create({
+        "Name": data["Title"],
         "Title__c": data["Title"],
         "Author__c": data["Author"],
         "Year__c": data["Year"],
