@@ -13,6 +13,10 @@ function App() {
     ISBN: ""
   });
 const handleAddBook = () => {
+    if (!newBook.Title.trim() || !newBook.Author.trim()) {
+      alert("Title and Author are required");
+      return;
+    }
   fetch("http://127.0.0.1:5000/books", {
     method: "POST",
     headers: {
@@ -152,7 +156,7 @@ const filteredBooks = books.filter((b) => {
             />
 
             <input
-              placeholder="Author"
+              placeholder="Author" 
               onChange={(e) => setNewBook({ ...newBook, Author: e.target.value })}
             />
 
