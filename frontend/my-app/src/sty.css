@@ -60,18 +60,18 @@ body {
   border-radius: 25px;
   border: 1px solid #cbd5f5;
   background: white;
-  color: #334155;
+  color: black;
   cursor: pointer;
   transition: 0.3s;
 }
 
 .mode:hover {
-  background: #2563eb;
+  background: rgb(57, 213, 213);
   color: white;
 }
 
 .mode.active {
-  background: #2563eb;
+  background: rgb(180, 44, 234);
   color: white;
   border: none;
 }
@@ -152,7 +152,7 @@ body {
 /* Remove button */
 .remove-btn {
   border: none;
-  background: #2563eb;
+  background: rgb(219, 62, 62);
   color: white;
   padding: 6px 14px;
   border-radius: 10px;
