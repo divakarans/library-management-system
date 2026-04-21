@@ -1,28 +1,18 @@
 from flask import Flask,jsonify,request
+import mysql.connector
 from simple_salesforce import Salesforce
 from flask_cors import CORS
 
 app=Flask(__name__)
 CORS(app)
 
-sf=Salesforce(username="divasundar99.fa433fd94ec3@agentforce.com",password="Divakarandk99@",security_token="s6sKcTTJWaZnCw35556S2uidS")
+conn=mysql.connector.connect(host='localhost',password='Divakarandk99@',user='root',database='book_archive')
+cursor=conn.cursor(dictionary=True)
 
 @app.route("/books", methods=["GET"])
 def get_books():
-    query = sf.query(
-        "SELECT Id, Title__c, Author__c, Year__c, ISBN__c FROM Book__c"
-    )
-
-    books = []
-    for r in query['records']:
-        books.append({
-            "Id": r.get("Id"),
-            "Title": r.get("Title__c") or "",
-            "Author": r.get("Author__c") or "",
-            "Year": r.get("Year__c") or "",
-            "ISBN": r.get("ISBN__c") or ""
-        })
-
+    cursor.execute('select * from book')
+    books=cursor.fetchall()
     return jsonify(books)
 
 # ADD book
@@ -30,20 +20,24 @@ def get_books():
 def add_book():
     data = request.json
 
-    sf.Book__c.create({
-        "Name": data["Title"],
-        "Title__c": data["Title"],
-        "Author__c": data["Author"],
-        "Year__c": data["Year"],
-        "ISBN__c": data["ISBN"]
-    })
+    query="""Insert into book(title,author,year,isbn) values (%s,%s,%s,%s)"""
+
+    cursor.execute(query,(
+        data['Title'],
+        data['Author'],
+        data['Year'],
+        data['ISBN']
+    ))
+
+    conn.commit()
 
     return jsonify({"message": "Book added"})
 
 # DELETE book
 @app.route("/books/<id>", methods=["DELETE"])
 def delete_book(id):
-    sf.Book__c.delete(id)
+    cursor.execute("delete from book where id = %s",(id,))
+    conn.commit()
     return jsonify({"message": "Book deleted"})
 
 
