@@ -36,7 +36,7 @@ const handleAddBook = () => {
     fetch("http://127.0.0.1:5000/books")
       .then(res => res.json())
       .then(data => setBooks(data))
-      .catch(err => console.log(err));
+      .then(data => console.log(data))
   }, []);
 
   const removeBook = (id) => {
@@ -44,7 +44,7 @@ const handleAddBook = () => {
     method: "DELETE"
   })
     .then(() => {
-      setBooks(books.filter(b => b.Id !== id));
+      setBooks(books.filter(b => b.id !== id));
     });
   };
 
@@ -133,7 +133,7 @@ const filteredBooks = books.filter((b) => {
             </div>
 
             <button className="remove-btn"
-              onClick={() => removeBook(b.Id)}
+              onClick={() => removeBook(b.id)}
             >
               Remove
             </button>
