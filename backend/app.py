@@ -1,6 +1,5 @@
 from flask import Flask,jsonify,request
 import mysql.connector
-from simple_salesforce import Salesforce
 from flask_cors import CORS
 
 app=Flask(__name__)
@@ -20,13 +19,14 @@ def get_books():
 def add_book():
     data = request.json
 
-    query="""Insert into book(title,author,year,isbn) values (%s,%s,%s,%s)"""
+    query="""Insert into book(title,author,year,isbn,image_url) values (%s,%s,%s,%s,%s)"""
 
     cursor.execute(query,(
         data['Title'],
         data['Author'],
         data['Year'],
-        data['ISBN']
+        data['ISBN'],
+        data['ImageURL']
     ))
 
     conn.commit()

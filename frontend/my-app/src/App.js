@@ -10,13 +10,15 @@ function App() {
     Title: "",
     Author: "",
     Year: "",
-    ISBN: ""
+    ISBN: "",
+    ImageURL:""
   });
 const handleAddBook = () => {
-    if (!newBook.Title.trim() || !newBook.Author.trim()) {
-      alert("Title and Author are required");
-      return;
-    }
+  if (!newBook.Title.trim() || !newBook.Author.trim()) {
+    alert("Title and Author are required");
+    return;
+  }
+
   fetch("http://127.0.0.1:5000/books", {
     method: "POST",
     headers: {
@@ -26,12 +28,21 @@ const handleAddBook = () => {
   })
     .then(res => res.json())
     .then(() => {
-      setBooks([...books, newBook]); 
-      setShowModal(false);
-      setNewBook({ Title: "", Author: "", Year: "", ISBN: "" });
+      fetch("http://127.0.0.1:5000/books")
+        .then(res => res.json())
+        .then(data => {
+          setBooks(data);
+          setShowModal(false);
+          setNewBook({
+            Title: "",
+            Author: "",
+            Year: "",
+            ISBN: "",
+            ImageURL: ""
+          });
+        });
     });
-  };
-  
+};
   useEffect(() => {
     fetch("http://127.0.0.1:5000/books")
       .then(res => res.json())
@@ -118,18 +129,26 @@ const filteredBooks = books.filter((b) => {
         {filteredBooks.map((b, i) => (
           <div key={i} className="card">
 
+            {b.image_url && (
+              <img
+                src={b.image_url}
+                alt={b.title}
+                className="book-image"
+              />
+            )}
+
             <div className="card-top">
-              <h3>{b.Title}</h3>
+              <h3>{b.title}</h3>
               <span>#{String(i + 1).padStart(2, "0")}</span>
             </div>
 
             <div className="tags">
-              <span>author {b.Author}</span>
-              <span>year {b.Year}</span>
+              <span>author {b.author}</span>
+              <span>year {b.year}</span>
             </div>
 
             <div className="tags">
-              <span>isbn {b.ISBN}</span>
+              <span>isbn {b.isbn}</span>
             </div>
 
             <button className="remove-btn"
@@ -168,6 +187,11 @@ const filteredBooks = books.filter((b) => {
             <input
               placeholder="ISBN"
               onChange={(e) => setNewBook({ ...newBook, ISBN: e.target.value })}
+            />
+
+            <input
+              placeholder="ImageURL"
+              onChange={(e) => setNewBook({ ...newBook, ImageURL: e.target.value })}
             />
 
             <div className="modal-actions">
