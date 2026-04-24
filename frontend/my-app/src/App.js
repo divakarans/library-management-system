@@ -6,6 +6,7 @@ function App() {
   const [search,setSearch]=useState("");
   const [showModal,setShowModal]=useState(false);
   const [mode, setMode] = useState("title");
+  const [editId, setEditId] = useState(null);
   const [newBook,setNewBook]=useState({
     Title: "",
     Author: "",
@@ -19,8 +20,14 @@ const handleAddBook = () => {
     return;
   }
 
-  fetch("http://127.0.0.1:5000/books", {
-    method: "POST",
+  const url = editId
+    ? `http://127.0.0.1:5000/books/${editId}`
+    : "http://127.0.0.1:5000/books";
+
+  const method = editId ? "PUT" : "POST";
+
+  fetch(url, {
+    method: method,
     headers: {
       "Content-Type": "application/json"
     },
@@ -33,6 +40,8 @@ const handleAddBook = () => {
         .then(data => {
           setBooks(data);
           setShowModal(false);
+          setEditId(null);
+
           setNewBook({
             Title: "",
             Author: "",
@@ -43,6 +52,8 @@ const handleAddBook = () => {
         });
     });
 };
+
+
   useEffect(() => {
     fetch("http://127.0.0.1:5000/books")
       .then(res => res.json())
@@ -58,6 +69,21 @@ const handleAddBook = () => {
       setBooks(books.filter(b => b.id !== id));
     });
   };
+
+const editBook = (book) => {
+  setEditId(book.id);
+
+  setNewBook({
+    Title: book.title,
+    Author: book.author,
+    Year: book.year,
+    ISBN: book.isbn,
+    ImageURL: book.image_url
+  });
+
+  setShowModal(true);
+};
+
 
 const filteredBooks = books.filter((b) => {
   const value = search.toLowerCase();
@@ -78,6 +104,8 @@ const filteredBooks = books.filter((b) => {
 
   return true;
 });
+
+
 
   return (
     <div className="app">
@@ -151,11 +179,21 @@ const filteredBooks = books.filter((b) => {
               <span>isbn {b.isbn}</span>
             </div>
 
-            <button className="remove-btn"
-              onClick={() => removeBook(b.id)}
-            >
-              Remove
-            </button>
+            <div className="card-actions">
+              <button
+                className="edit-btn"
+                onClick={() => editBook(b)}
+              >
+                Edit
+              </button>
+
+              <button
+                className="remove-btn"
+                onClick={() => removeBook(b.id)}
+              >
+                Remove
+              </button>
+            </div>
 
           </div>
         ))}

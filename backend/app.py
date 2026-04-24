@@ -33,6 +33,29 @@ def add_book():
 
     return jsonify({"message": "Book added"})
 
+@app.route("/books/<id>", methods=["PUT"])
+def update_book(id):
+    data = request.json
+
+    query = """
+    UPDATE book
+    SET title=%s, author=%s, year=%s, isbn=%s, image_url=%s
+    WHERE id=%s
+    """
+
+    cursor.execute(query, (
+        data['Title'],
+        data['Author'],
+        data['Year'],
+        data['ISBN'],
+        data['ImageURL'],
+        id
+    ))
+
+    conn.commit()
+
+    return jsonify({"message": "Book updated"})
+
 # DELETE book
 @app.route("/books/<id>", methods=["DELETE"])
 def delete_book(id):
