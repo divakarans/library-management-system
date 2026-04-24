@@ -91,15 +91,15 @@ const filteredBooks = books.filter((b) => {
   if (!value) return true;
 
   if (mode === "title") {
-    return (b.Title || "").toLowerCase().includes(value);
+    return (b.title || "").toLowerCase().includes(value);
   }
 
   if (mode === "author") {
-    return (b.Author || "").toLowerCase().includes(value);
+    return (b.author || "").toLowerCase().includes(value);
   }
 
   if (mode === "isbn") {
-    return (b.ISBN || "").toString().includes(value);
+    return (b.isbn || "").toString().includes(value);
   }
 
   return true;
