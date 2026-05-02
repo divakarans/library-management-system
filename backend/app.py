@@ -19,6 +19,17 @@ def get_books():
 def add_book():
     data = request.json
 
+    # Check duplicate
+    cursor.execute(
+        "SELECT * FROM book WHERE isbn=%s",
+        (data['ISBN'],)
+    )
+
+    existing_book = cursor.fetchone()
+
+    if existing_book:
+        return jsonify({"message": "Book already exists"}), 400
+
     query="""Insert into book(title,author,year,isbn,image_url) values (%s,%s,%s,%s,%s)"""
 
     cursor.execute(query,(

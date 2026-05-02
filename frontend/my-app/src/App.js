@@ -33,8 +33,14 @@ const handleAddBook = () => {
     },
     body: JSON.stringify(newBook)
   })
-    .then(res => res.json())
-    .then(() => {
+    .then(async (res) => {
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.message);
+        return;
+      }
+
       fetch("http://127.0.0.1:5000/books")
         .then(res => res.json())
         .then(data => {
@@ -51,7 +57,7 @@ const handleAddBook = () => {
           });
         });
     });
-};
+  };
 
 
   useEffect(() => {
