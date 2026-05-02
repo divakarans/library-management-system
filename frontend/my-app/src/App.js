@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./sty.css";
 import { supabase } from "./supabase";
 import { useNavigate } from "react-router-dom";
+const API_URL = process.env.REACT_APP_API_URL;
 
 function App() {
   const [books, setBooks] = useState([]);
@@ -30,8 +31,8 @@ const handleAddBook = () => {
   }
 
   const url = editId
-    ? `http://127.0.0.1:5000/books/${editId}`
-    : "http://127.0.0.1:5000/books";
+    ? `${API_URL}/books/${editId}`
+    : `${API_URL}/books`;
 
   const method = editId ? "PUT" : "POST";
 
@@ -55,7 +56,7 @@ const handleAddBook = () => {
         return;
       }
 
-      fetch("http://127.0.0.1:5000/books")
+      fetch(`${API_URL}/books`)
         .then(res => res.json())
         .then(data => {
           setBooks(data);
@@ -90,13 +91,13 @@ const handleAddBook = () => {
 
     console.log("Current User:", userId);
 
-    fetch(`http://127.0.0.1:5000/books?user_id=${userId}`)
+    fetch(`${API_URL}/books?user_id=${userId}`)
       .then(res => res.json())
       .then(data => setBooks(data));
   }, [userId]);
 
   const removeBook = (id) => {
-  fetch(`http://127.0.0.1:5000/books/${id}`, {
+  fetch(`${API_URL}/books/${id}`, {
     method: "DELETE"
   })
     .then(() => {
