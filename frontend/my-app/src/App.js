@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import "./sty.css";
+import { supabase } from "./supabase";
+import { useNavigate } from "react-router-dom";
 
 function App() {
   const [books, setBooks] = useState([]);
+  const [userId, setUserId] = useState("");
   const [search,setSearch]=useState("");
   const [showModal,setShowModal]=useState(false);
   const [mode, setMode] = useState("title");
@@ -14,6 +17,12 @@ function App() {
     ISBN: "",
     ImageURL:""
   });
+  const navigate = useNavigate();
+
+  const logout = async () => {
+    await supabase.auth.signOut();
+    navigate("/");
+  };
 const handleAddBook = () => {
   if (!newBook.Title.trim() || !newBook.Author.trim()) {
     alert("Title and Author are required");
@@ -26,12 +35,17 @@ const handleAddBook = () => {
 
   const method = editId ? "PUT" : "POST";
 
+  const payload = {
+  ...newBook,
+  user_id: userId
+  };
+
   fetch(url, {
     method: method,
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify(newBook)
+    body: JSON.stringify(payload)
   })
     .then(async (res) => {
       const data = await res.json();
@@ -59,13 +73,27 @@ const handleAddBook = () => {
     });
   };
 
+  useEffect(() => {
+    const getUser = async () => {
+      const { data } = await supabase.auth.getUser();
+
+      if (data.user) {
+        setUserId(data.user.id);
+      }
+    };
+
+    getUser();
+  }, []);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/books")
+    if (!userId) return;
+
+    console.log("Current User:", userId);
+
+    fetch(`http://127.0.0.1:5000/books?user_id=${userId}`)
       .then(res => res.json())
-      .then(data => setBooks(data))
-      .then(data => console.log(data))
-  }, []);
+      .then(data => setBooks(data));
+  }, [userId]);
 
   const removeBook = (id) => {
   fetch(`http://127.0.0.1:5000/books/${id}`, {
@@ -123,9 +151,15 @@ const filteredBooks = books.filter((b) => {
           <p>PERSONAL LIBRARY</p>
         </div>
 
-        <div className="count-box">
-          <h2>{books.length}</h2>
-          <p>BOOKS</p>
+        <div className="header-right">
+          <button onClick={logout} className="logout-btn">
+            Logout
+          </button>
+
+          <div className="count-box">
+            <h2>{books.length}</h2>
+            <p>BOOKS</p>
+          </div>
         </div>
       </div>
 

@@ -10,8 +10,16 @@ cursor=conn.cursor(dictionary=True)
 
 @app.route("/books", methods=["GET"])
 def get_books():
-    cursor.execute('select * from book')
-    books=cursor.fetchall()
+    user_id = request.args.get("user_id")
+
+    print("Received user_id:", user_id)
+
+    query = "SELECT * FROM book WHERE user_id = %s"
+
+    cursor.execute(query, (user_id,))
+
+    books = cursor.fetchall()
+
     return jsonify(books)
 
 # ADD book
@@ -30,14 +38,15 @@ def add_book():
     if existing_book:
         return jsonify({"message": "Book already exists"}), 400
 
-    query="""Insert into book(title,author,year,isbn,image_url) values (%s,%s,%s,%s,%s)"""
+    query="""Insert into book(title,author,year,isbn,image_url, user_id) values (%s,%s,%s,%s,%s,%s)"""
 
     cursor.execute(query,(
         data['Title'],
         data['Author'],
         data['Year'],
         data['ISBN'],
-        data['ImageURL']
+        data['ImageURL'],
+        data['user_id']
     ))
 
     conn.commit()
